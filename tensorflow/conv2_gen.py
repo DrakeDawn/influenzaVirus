@@ -128,22 +128,25 @@ def main(_):
 		sess.run(train_step, feed_dict={x: sequences, y_: labels, keep_prob: 0.5})
 
 	# Test trained model
-	sequences[:] = []
-	labels[:] = []
-	for i in range(1000):
-		temps, templ = sess.run([seq_batch, label_batch])
-		sequences.extend(temps)
-		labels.extend(templ)
-	sequences = [map(float, list(word)) for word in sequences]
-	temp = []
-	for n in labels:
-		a = [0]*198
-		a[n] = 1
-		temp.append(a)
-	labels = temp
-
-	print('Test result:', sess.run(accuracy, feed_dict={x: sequences,
-		y_: labels, keep_prob: 1.0}))
+	test_result = 0
+	for j in range(100):
+		sequences[:] = []
+		labels[:] = []
+		for i in range(10):
+			temps, templ = sess.run([seq_batch, label_batch])
+			sequences.extend(temps)
+			labels.extend(templ)
+		sequences = [map(float, list(word)) for word in sequences]
+		temp = []
+		for n in labels:
+			a = [0]*198
+			a[n] = 1
+			temp.append(a)
+		labels = temp
+		test_result += sess.run(accuracy, feed_dict={x: sequences, y_: labels, keep_prob: 1.0}) * 1000
+		
+	test_result = test_result / 100000.0
+	print('Test result:', test_result)
 
 	#stop coordinator
 	coord.request_stop()
