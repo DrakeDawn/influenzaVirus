@@ -77,10 +77,10 @@ def main(_):
 	h_pool2 = max_pool_nx1(h_conv2, second)
 
 
-	h_pool2_flat = tf.reshape(h_pool2, [-1, int(1024 / (first * second) * 4 * 128)])
+	h_pool2_flat = tf.reshape(h_pool2, [-1, int(1024 / (first * second) * 4 * 64)])
 
 
-	W_fc1 = weight_variable([int(1024 / (first * second) * 4 * 128), fc])
+	W_fc1 = weight_variable([int(1024 / (first * second) * 4 * 64), fc])
 	b_fc1 = bias_variable([fc])
 
 	h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
