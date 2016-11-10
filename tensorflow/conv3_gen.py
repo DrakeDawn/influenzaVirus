@@ -134,7 +134,12 @@ def main(_):
 		sess.run(train_step, feed_dict={x: sequences, y_: labels, keep_prob: 0.5})
 
 	# Test trained model
-	sequences, labels = sess.run([seq_batch, label_batch])
+	sequences[:] = []
+	labels[:] = []
+	for i in range(1000):
+		temps, templ = sess.run([seq_batch, label_batch])
+		sequences.extend(temps)
+		labels.extend(templ)
 	sequences = [map(float, list(word)) for word in sequences]
 	temp = []
 	for n in labels:
