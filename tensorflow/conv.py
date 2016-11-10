@@ -108,11 +108,11 @@ def main(_):
 
 	sess = tf.InteractiveSession()
 	coord = tf.train.Coordinator()
-	threads = tf.train.start_queue_runners(coord=coord, sess=sess)
 	
 	#Training started
 	#810000 records
 	tf.initialize_all_variables().run()
+	threads = tf.train.start_queue_runners(coord=coord, sess=sess)
 	for i in range(6000):
 	#read data
 		sequences, labels = sess.run([seq_batch, label_batch])
