@@ -83,10 +83,10 @@ def main(_):
 	h_conv3 = tf.nn.relu(conv2d(h_pool2, W_conv3) + b_conv3)
 	h_pool3 = max_pool_nx1(h_conv3, third)
 
-	h_pool3_flat = tf.reshape(h_pool3, [-1, 1024 / (first * second * third) * 4 * 128])
+	h_pool3_flat = tf.reshape(h_pool3, [-1, int(1024 / (first * second * third) * 4 * 128)])
 
 
-	W_fc1 = weight_variable([1024 / (first * second * third) * 4 * 128, fc])
+	W_fc1 = weight_variable([int(1024 / (first * second * third) * 4 * 128), fc])
 	b_fc1 = bias_variable([fc])
 
 	h_fc1 = tf.nn.relu(tf.matmul(h_pool3_flat, W_fc1) + b_fc1)
