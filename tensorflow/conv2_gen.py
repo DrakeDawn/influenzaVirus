@@ -143,7 +143,7 @@ def main(_):
 			a[n] = 1
 			temp.append(a)
 		labels = temp
-		test_result += sess.run(accuracy, feed_dict={x: sequences, y_: labels, keep_prob: 1.0}) * 1000
+		test_result += int(sess.run(accuracy, feed_dict={x: sequences, y_: labels, keep_prob: 1.0}) * 1000)
 		
 	test_result = test_result / 100000.0
 	print('Test result:', test_result)
