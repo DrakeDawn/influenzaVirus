@@ -11,7 +11,7 @@ import tensorflow as tf
 def read_my_file_format(filename_queue):
 	reader = tf.TextLineReader()
 	key, value = reader.read(filename_queue)
-	record_defaults = [[0], ['0'*4000]]
+	record_defaults = [[0], ['0'*4*1024]]
 	col1, col2 = tf.decode_csv(value, record_defaults=record_defaults)
 	return col2, col1
 
@@ -59,11 +59,11 @@ def main(_):
 	seq_batch, label_batch = input_pipeline(filenames, 100)
 
 	#placeholder, to be replaced by data input and label
-	x = tf.placeholder(tf.float32, [None, 4000])
+	x = tf.placeholder(tf.float32, [None, 4 * 1024])
 	y_ = tf.placeholder(tf.float32, shape=[None, 198])
 
 	#Reshape the images
-	x_image = tf.reshape(x, [-1, 1000, 4, 1])
+	x_image = tf.reshape(x, [-1, 1024, 4, 1])
 
 	#Start network construction
 	W_conv1 = weight_variable([4, 4, 1, 32])
@@ -78,13 +78,13 @@ def main(_):
 	b_conv2 = bias_variable([64])
 
 	h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
-	h_pool2 = max_pool_2x1(h_conv2)
+	h_pool2 = max_pool_4x1(h_conv2)
 
 
-	h_pool2_flat = tf.reshape(h_pool2, [-1, 125 * 4 * 64])
+	h_pool2_flat = tf.reshape(h_pool2, [-1, 64 * 4 * 64])
 
 
-	W_fc1 = weight_variable([125 * 4 * 64, 1024])
+	W_fc1 = weight_variable([64 * 4 * 64, 1024])
 	b_fc1 = bias_variable([1024])
 
 	h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
