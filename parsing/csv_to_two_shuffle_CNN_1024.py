@@ -72,5 +72,6 @@ print(count2)
 	#	maxlen = len(sequence)
 
 #print(maxlen)	#2867
-writefile.close()
+writefile1.close()
+writefile2.close()
 infile.close()
