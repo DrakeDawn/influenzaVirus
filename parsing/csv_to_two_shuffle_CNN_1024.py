@@ -63,7 +63,7 @@ for label, sequence in reader:
 						
 random.shuffle(record)
 writer1.writerows(record[200000:])
-writer2.writerows(reccord[:200000])
+writer2.writerows(record[:200000])
 
 print(maxlen/float(count))
 print(count2)
