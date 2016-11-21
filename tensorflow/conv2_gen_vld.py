@@ -124,8 +124,6 @@ def main(_):
 	label_validation = temp
 	q = []
 
-
-
 	#Training started
 	#610000 records
 	for i in range(steps):
@@ -139,29 +137,31 @@ def main(_):
 			temp.append(a)
 		labels = temp
 
-		if len(q) == QSIZE:
-			q = q[1:]
-		validation_result = 0
-		for j in range(int(VALIDATION_RECORDS / 1000)):
-			temps = seq_validation[(j * 1000):((j + 1) * 1000)]
-			templ = label_validation[(j * 1000):((j + 1) * 1000)]
-			validation_result += int(sess.run(accuracy, feed_dict={x: temps, y_: templ, keep_prob: 1.0}) * 1000)
-		validation_result = validation_result / VALIDATION_RECORDS
-		q.append(validation_result)
-		narray1 = numpy.array(q)
-		sum1 = narray1.sum()
-		narray2 = narray1 * narray1
-		sum2 = narray2.sum()
-		mean = sum1 / len(q)
-		var = sum2 / len(q) - mean ** 2
-		print('Validation result:', validation_result)
-		print("Validation variance:", var)
-
-		#training accuracy
 		if i % 100 == 0:
+			#validation
+			if len(q) == QSIZE:
+				q = q[1:]
+			validation_result = 0
+			for j in range(int(VALIDATION_RECORDS / 1000)):
+				temps = seq_validation[(j * 1000):((j + 1) * 1000)]
+				templ = label_validation[(j * 1000):((j + 1) * 1000)]
+				validation_result += int(sess.run(accuracy, feed_dict={x: temps, y_: templ, keep_prob: 1.0}) * 1000)
+			validation_result = validation_result / VALIDATION_RECORDS
+			q.append(validation_result)
+			narray1 = numpy.array(q)
+			sum1 = narray1.sum()
+			narray2 = narray1 * narray1
+			sum2 = narray2.sum()
+			mean = sum1 / len(q)
+			var = sum2 / len(q) - mean ** 2
+			print('Validation result:', validation_result)
+			print("Validation variance:", var)
+
+			#training accuracy
 			train_accuracy = accuracy.eval(feed_dict={
 				x: sequences, y_: labels, keep_prob: 1.0})
 			print("step %d, training accuracy %g"%(i, train_accuracy))
+
 		#train
 		sess.run(train_step, feed_dict={x: sequences, y_: labels, keep_prob: 0.5})
 
