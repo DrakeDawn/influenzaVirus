@@ -142,7 +142,7 @@ def main(_):
 		if len(q) == QSIZE:
 			q = q[1:]
 		validation_result = 0
-		for j in range(VALIDATION_RECORDS / 1000):
+		for j in range(int(VALIDATION_RECORDS / 1000)):
 			temps = seq_validation[(j * 1000):((j + 1) * 1000)]
 			templ = label_validation[(j * 1000):((j + 1) * 1000)]
 			validation_result += int(sess.run(accuracy, feed_dict={x: temps, y_: templ, keep_prob: 1.0}) * 1000)
