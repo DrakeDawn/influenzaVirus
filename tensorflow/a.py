@@ -5,6 +5,7 @@ from __future__ import print_function
 
 import argparse
 import numpy
+import math
 
 from sys import argv
 import tensorflow as tf
@@ -155,7 +156,7 @@ def main(_):
 			mean = sum1 / len(q)
 			var = sum2 / len(q) - mean ** 2
 			print('Validation result:', validation_result)
-			print("Validation variance:", var)
+			print("Validation standard deviation:", math.sqrt(var))
 
 			#training accuracy
 			train_accuracy = accuracy.eval(feed_dict={
