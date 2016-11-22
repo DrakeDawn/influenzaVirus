@@ -13,7 +13,7 @@ for label, sequence in reader1:
 for label, sequence in reader2:
 	count[int(label)] += 1
 
-index = sorted(range(len(count)), key = lambda k: count[k])
+index = sorted(range(len(count)), key = lambda k: count[k], reverse = True)
 
 for n in index:
 	print('Influenza {}:'.format(n), count[n])
