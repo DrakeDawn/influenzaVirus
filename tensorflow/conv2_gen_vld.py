@@ -5,6 +5,7 @@ from __future__ import print_function
 
 import argparse
 import numpy
+import math
 
 from sys import argv
 import tensorflow as tf
@@ -12,6 +13,8 @@ import tensorflow as tf
 CLASSES = 198
 TRAINING_RECORDS = 100
 VALIDATION_RECORDS = 10000
+CHANNEL_1 = 32
+CHANNEL_2 = 64
 QSIZE = 12
 
 def read_my_file_format(filename_queue):
@@ -69,24 +72,24 @@ def main(_):
 	x_image = tf.reshape(x, [-1, 1024, 4, 1])
 
 	#Start network construction
-	W_conv1 = weight_variable([first, 4, 1, 32])
-	b_conv1 = bias_variable([32])
+	W_conv1 = weight_variable([first, 4, 1, CHANNEL_1])
+	b_conv1 = bias_variable([CHANNEL_1])
 
 	h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
 	h_pool1 = max_pool_nx1(h_conv1, first)
 
 
-	W_conv2 = weight_variable([second, 4, 32, 64])
-	b_conv2 = bias_variable([64])
+	W_conv2 = weight_variable([second, 4, CHANNEL_1, CHANNEL_2])
+	b_conv2 = bias_variable([CHANNEL_2])
 
 	h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
 	h_pool2 = max_pool_nx1(h_conv2, second)
 
 
-	h_pool2_flat = tf.reshape(h_pool2, [-1, int(1024 / (first * second) * 4 * 64)])
+	h_pool2_flat = tf.reshape(h_pool2, [-1, int(1024 / (first * second) * 4 * CHANNEL_2)])
 
 
-	W_fc1 = weight_variable([int(1024 / (first * second) * 4 * 64), fc])
+	W_fc1 = weight_variable([int(1024 / (first * second) * 4 * CHANNEL_2), fc])
 	b_fc1 = bias_variable([fc])
 
 	h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
@@ -125,7 +128,7 @@ def main(_):
 	q = []
 
 	#Training started
-	#610000 records
+	#6100*100 records
 	for i in range(steps):
 	#read & parse data
 		sequences, labels = sess.run([seq_batch, label_batch])
@@ -155,7 +158,7 @@ def main(_):
 			mean = sum1 / len(q)
 			var = sum2 / len(q) - mean ** 2
 			print('Validation result:', validation_result)
-			print("Validation variance:", var)
+			print("Validation standard deviation:", math.sqrt(var))
 
 			#training accuracy
 			train_accuracy = accuracy.eval(feed_dict={
@@ -167,6 +170,8 @@ def main(_):
 
 	# Test trained model
 	test_result = 0
+	ac_cases = [0]*CLASSES
+	num_cases = [0]*CLASSES
 	for j in range(100):
 		sequences[:] = []
 		labels[:] = []
@@ -180,11 +185,23 @@ def main(_):
 			a = [0]*CLASSES
 			a[n] = 1
 			temp.append(a)
+		raw_labels = labels
 		labels = temp
-		test_result += int(sess.run(accuracy, feed_dict={x: sequences, y_: labels, keep_prob: 1.0}) * 1000)
+#		test_result += int(sess.run(accuracy, feed_dict={x: sequences, y_: labels, keep_prob: 1.0}) * 1000)
+		cp = sess.run(correct_prediction, feed_dict={x: sequences, y_: labels, keep_prob: 1.0})
+		test_result += int(sess.run(accuracy, feed_dict={correct_prediction: cp}) * 1000)
+		for n in range(1000):
+			num_cases[raw_labels[n]] += 1
+			ac_cases[raw_labels[n]] += cp[n]
 
 	test_result = test_result / 100000.0
 	print('Test result:', test_result)
+	for n in range(CLASSES):
+		if num_cases[n] == 0:
+			print('Influenza {}:'.format(n), 'no records')
+		else:
+			print('Influenza {}:'.format(n), float(ac_cases[n]) / num_cases[n])
+
 
 	#stop coordinator
 	coord.request_stop()
