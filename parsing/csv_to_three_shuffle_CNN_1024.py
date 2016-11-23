@@ -2,8 +2,11 @@ import csv
 import random
 import math
 
-infile = file('raw_data.csv', 'rb')
-reader = csv.reader(infile)
+infile1 = file('raw_data.csv', 'rb')
+reader1 = csv.reader(infile1)
+
+infile2 = file('renaming.csv', 'rb')
+reader1 = csv.reader(infile2)
 
 writefile1 = file('shuffle_CNN_training.csv', 'ab')
 writer1 = csv.writer(writefile1)
@@ -18,10 +21,13 @@ maxlen = 0
 count = 0
 count2 = 0
 
+renaming = [-1]*198
+for label, rename in reader2:
+	renaming[label] = rename
 
 record = []
 
-for label, sequence in reader:
+for label, sequence in reader1:
 	if label[0] == '>':
 		if label.find('Influenza A virus') > -1:
 			index = label.find('))')
@@ -60,9 +66,10 @@ for label, sequence in reader:
 					sequence = sequence.ljust(m * 1024 * 4, '0')
 
 					if code > -1:
-						for i in range(m):
-							record.append([code, sequence[(4 * 1024 * i):(4 * 1024 * (i + 1))]])
-							count2 += 1
+						if renaming[code] > -1:
+							for i in range(m):
+								record.append([renaming[code], sequence[(4 * 1024 * i):(4 * 1024 * (i + 1))]])
+								count2 += 1
 						
 random.shuffle(record)
 writer2.writerows(record[:120000])
@@ -78,4 +85,6 @@ print(count2)
 #print(maxlen)	#2867
 writefile1.close()
 writefile2.close()
-infile.close()
+writefile3.close()
+infile1.close()
+infile2.close()
