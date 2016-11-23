@@ -64,6 +64,8 @@ def main(_):
 	seq_batch, label_batch = input_pipeline(filenames, TRAINING_RECORDS)
 	fnames_validation = ['shuffle_CNN_validation.csv']
 	seq_batch_v, label_batch_v = input_pipeline(fnames_validation, VALIDATION_RECORDS)
+	fnames_testing = ['shuffle_CNN_testing.csv']
+	seq_batch_t, label_batch_t = input_pipeline(fnames_testing, 100)
 
 	#placeholder, to be replaced by data input and label
 	x = tf.placeholder(tf.float32, [None, 4 * 1024])
@@ -177,7 +179,7 @@ def main(_):
 		sequences[:] = []
 		labels[:] = []
 		for i in range(10):
-			temps, templ = sess.run([seq_batch, label_batch])
+			temps, templ = sess.run([seq_batch_t, label_batch_t])
 			sequences.extend(temps)
 			labels.extend(templ)
 		sequences = [map(float, list(word)) for word in sequences]
