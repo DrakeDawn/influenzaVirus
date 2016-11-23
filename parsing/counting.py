@@ -16,4 +16,4 @@ for label, sequence in reader2:
 index = sorted(range(len(count)), key = lambda k: count[k], reverse = True)
 
 for n in index:
-	print('Influenza {}:'.format(n), count[n])
+	print 'Influenza {}:'.format(n), count[n]
