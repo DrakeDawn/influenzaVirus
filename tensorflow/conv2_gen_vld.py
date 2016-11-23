@@ -13,6 +13,7 @@ import tensorflow as tf
 CLASSES = 198
 TRAINING_RECORDS = 100
 VALIDATION_RECORDS = 10000
+TESTING_RECORDS = 100000
 CHANNEL_1 = 32
 CHANNEL_2 = 64
 QSIZE = 12
@@ -172,7 +173,7 @@ def main(_):
 	test_result = 0
 	ac_cases = [0]*CLASSES
 	num_cases = [0]*CLASSES
-	for j in range(100):
+	for j in range(int(TESTING_RECORDS / 1000)):
 		sequences[:] = []
 		labels[:] = []
 		for i in range(10):
@@ -194,7 +195,7 @@ def main(_):
 			num_cases[raw_labels[n]] += 1
 			ac_cases[raw_labels[n]] += cp[n]
 
-	test_result = test_result / 100000.0
+	test_result = test_result / float(TESTING_RECORDS)
 	print('Test result:', test_result)
 	for n in range(CLASSES):
 		if num_cases[n] == 0:
