@@ -16,5 +16,5 @@ for label, sequence in reader2:
 index = sorted(range(len(count)), key = lambda k: count[k], reverse = True)
 
 for n in range(198):
-	if count(index(n)) > 10:
+	if count[inde[(n]] > 10:
 		print '{},{}'.format(index(n), n)
