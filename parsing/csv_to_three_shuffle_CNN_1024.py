@@ -23,7 +23,7 @@ count2 = 0
 
 renaming = [-1]*198
 for label, rename in reader2:
-	renaming[label] = rename
+	renaming[int(label)] = rename
 
 record = []
 
