@@ -6,7 +6,7 @@ infile1 = file('raw_data.csv', 'rb')
 reader1 = csv.reader(infile1)
 
 infile2 = file('renaming.csv', 'rb')
-reader1 = csv.reader(infile2)
+reader2 = csv.reader(infile2)
 
 writefile1 = file('shuffle_CNN_training.csv', 'ab')
 writer1 = csv.writer(writefile1)
