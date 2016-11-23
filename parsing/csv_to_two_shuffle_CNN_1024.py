@@ -8,8 +8,11 @@ reader = csv.reader(infile)
 writefile1 = file('shuffle_CNN_training.csv', 'ab')
 writer1 = csv.writer(writefile1)
 
-writefile2 = file('shuffle_CNN_validation.csv', 'ab')
+writefile2 = file('shuffle_CNN_testing.csv', 'ab')
 writer2 = csv.writer(writefile2)
+
+writefile3 = file('shuffle_CNN_validation.csv', 'ab')
+writer3 = csv.writer(writefile3)
 
 maxlen = 0
 count = 0
@@ -62,8 +65,9 @@ for label, sequence in reader:
 							count2 += 1
 						
 random.shuffle(record)
-writer1.writerows(record[200000:])
-writer2.writerows(record[:200000])
+writer2.writerows(record[:120000])
+writer3.writerows(record[120000:150000])
+writer1.writerows(record[150000:])
 
 print(maxlen/float(count))
 print(count2)
