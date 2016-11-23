@@ -10,7 +10,7 @@ import math
 from sys import argv
 import tensorflow as tf
 
-CLASSES = 198
+CLASSES = 90
 TRAINING_RECORDS = 100
 VALIDATION_RECORDS = 10000
 TESTING_RECORDS = 100000
