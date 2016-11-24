@@ -148,10 +148,10 @@ def main(_):
 			if len(q) == QSIZE:
 				q = q[1:]
 			validation_result = 0
-			for j in range(int(VALIDATION_RECORDS / 1000)):
-				temps = seq_validation[(j * 1000):((j + 1) * 1000)]
-				templ = label_validation[(j * 1000):((j + 1) * 1000)]
-				validation_result += int(sess.run(accuracy, feed_dict={x: temps, y_: templ, keep_prob: 1.0}) * 1000)
+			for j in range(int(VALIDATION_RECORDS / 100)):
+				temps = seq_validation[(j * 100):((j + 1) * 100)]
+				templ = label_validation[(j * 100):((j + 1) * 100)]
+				validation_result += int(sess.run(accuracy, feed_dict={x: temps, y_: templ, keep_prob: 1.0}) * 100)
 			validation_result = validation_result / VALIDATION_RECORDS
 			q.append(validation_result)
 			narray1 = numpy.array(q)
@@ -163,11 +163,6 @@ def main(_):
 			print('Validation result:', validation_result)
 			print("Validation standard deviation:", math.sqrt(var))
 
-			#training accuracy
-			train_accuracy = accuracy.eval(feed_dict={
-				x: sequences, y_: labels, keep_prob: 1.0})
-			print("step %d, training accuracy %g"%(i, train_accuracy))
-
 		#train
 		sess.run(train_step, feed_dict={x: sequences, y_: labels, keep_prob: 0.5})
 
@@ -175,13 +170,10 @@ def main(_):
 	test_result = 0
 	ac_cases = [0]*CLASSES
 	num_cases = [0]*CLASSES
-	for j in range(int(TESTING_RECORDS / 1000)):
+	for j in range(int(TESTING_RECORDS / 100)):
 		sequences[:] = []
 		labels[:] = []
-		for i in range(10):
-			temps, templ = sess.run([seq_batch_t, label_batch_t])
-			sequences.extend(temps)
-			labels.extend(templ)
+		sequences, labels = sess.run([seq_batch_t, label_batch_t])
 		sequences = [map(float, list(word)) for word in sequences]
 		temp = []
 		for n in labels:
@@ -192,8 +184,8 @@ def main(_):
 		labels = temp
 #		test_result += int(sess.run(accuracy, feed_dict={x: sequences, y_: labels, keep_prob: 1.0}) * 1000)
 		cp = sess.run(correct_prediction, feed_dict={x: sequences, y_: labels, keep_prob: 1.0})
-		test_result += int(sess.run(accuracy, feed_dict={correct_prediction: cp}) * 1000)
-		for n in range(1000):
+		test_result += int(sess.run(accuracy, feed_dict={correct_prediction: cp}) * 100)
+		for n in range(100):
 			num_cases[raw_labels[n]] += 1
 			ac_cases[raw_labels[n]] += cp[n]
 
