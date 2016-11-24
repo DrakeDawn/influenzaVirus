@@ -11,7 +11,6 @@ from sys import argv
 import tensorflow as tf
 
 CLASSES = 90
-TRAINING_RECORDS = 100
 VALIDATION_RECORDS = 10000
 TESTING_RECORDS = 100000
 CHANNEL_1 = 32
@@ -61,7 +60,7 @@ def max_pool_nx1(x, n):
 
 def main(_):
 	filenames = ['shuffle_CNN_training.csv']
-	seq_batch, label_batch = input_pipeline(filenames, TRAINING_RECORDS)
+	seq_batch, label_batch = input_pipeline(filenames, 100)
 	fnames_validation = ['shuffle_CNN_validation.csv']
 	seq_batch_v, label_batch_v = input_pipeline(fnames_validation, VALIDATION_RECORDS)
 	fnames_testing = ['shuffle_CNN_testing.csv']
