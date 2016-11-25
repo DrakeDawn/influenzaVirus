@@ -38,7 +38,7 @@ def input_pipeline(filenames, batch_size, num_epochs=None):
 	# capacity must be larger than min_after_dequeue and the amount larger
 	#   determines the maximum we will prefetch.  Recommendation:
 	#   min_after_dequeue + (num_threads + a small safety margin) * batch_size
-	min_after_dequeue = batch_size
+	min_after_dequeue = 10 * batch_size
 	capacity = min_after_dequeue + 3 * batch_size
 	example_batch, label_batch = tf.train.shuffle_batch(
 		[example, label], batch_size=batch_size, capacity=capacity,
