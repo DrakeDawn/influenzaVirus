@@ -72,7 +72,7 @@ def main(_):
 
   # Train
   tf.initialize_all_variables().run()
-  for i in range(4000):
+  for i in range(5000):
     #read data
     sequences, labels = sess.run([seq_batch, label_batch])
     sequences = [map(float, list(word)) for word in sequences]
@@ -91,17 +91,19 @@ def main(_):
     sess.run(train_step, feed_dict={x: sequences, y_: labels})
 
   # Test trained model
-  sequences, labels = sess.run([seq_batch, label_batch])
-  sequences = [map(float, list(word)) for word in sequences]
-  temp = []
-  for n in labels:
-    a = [0]*198
-    a[n] = 1
-    temp.append(a)
-  labels = temp
+  c = 0
+  for n in range(1000):
+    sequences, labels = sess.run([seq_batch, label_batch])
+    sequences = [map(float, list(word)) for word in sequences]
+    temp = []
+    for n in labels:
+      a = [0]*198
+      a[n] = 1
+      temp.append(a)
+    labels = temp
+    c +=  sess.run(accuracy, feed_dict={x: sequences, y_: labels}) * 100
 
-  print('Test result:', sess.run(accuracy, feed_dict={x: sequences,
-    y_: labels}))
+  print('Test result:', c / 100000.0)
 
   #stop coordinator
   coord.request_stop()
