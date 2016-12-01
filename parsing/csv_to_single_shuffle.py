@@ -4,7 +4,7 @@ import random
 infile = file('raw_data.csv', 'rb')
 reader = csv.reader(infile)
 
-writefile = file('softmax_shuffle.csv', 'ab')
+writefile = file('shuffle_for_SOFTMAX.csv', 'ab')
 writer = csv.writer(writefile)
 
 maxlen = 0
