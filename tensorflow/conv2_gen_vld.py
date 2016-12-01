@@ -147,9 +147,8 @@ def main(_):
 				templ = label_validation[(j * 100):((j + 1) * 100)]
 				validation_result += int(sess.run(accuracy, feed_dict={x: temps, y_: templ, keep_prob: 1.0}) * 100)
 			validation_result = validation_result / VALIDATION_RECORDS
-			print 'Iteration', i
-			print 'Training accuracy:', validation_result
-			print ''
+			print('Iteration {}'.format(i))
+			print('Training accuracy: {}'.format(validation_result))
 
 		#train
 		sess.run(train_step, feed_dict={x: sequences, y_: labels, keep_prob: 0.5})
