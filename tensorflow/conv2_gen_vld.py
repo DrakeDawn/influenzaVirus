@@ -177,7 +177,7 @@ def main(_):
 			ac_cases[raw_labels[n]] += cp[n]
 
 	test_result = test_result / float(TESTING_RECORDS)
-	print('Test result:', test_result)
+	print('Test result: {}\n'.format(test_result))
 	for n in range(CLASSES):
 		if num_cases[n] == 0:
 			print('Influenza {}:'.format(n), 'no records')
