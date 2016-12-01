@@ -86,7 +86,7 @@ def main(_):
     if i % 100 == 0:
       train_accuracy = accuracy.eval(feed_dict={
         x:sequences, y_: labels})
-      print("step %d, training accuracy %g"%(i, train_accuracy))
+      print("Iteration %d\nTraining accuracy: %g\n"%(i, train_accuracy))
 
     sess.run(train_step, feed_dict={x: sequences, y_: labels})
 
