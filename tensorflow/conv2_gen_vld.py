@@ -15,7 +15,6 @@ VALIDATION_RECORDS = 10000
 TESTING_RECORDS = 100000
 CHANNEL_1 = 32
 CHANNEL_2 = 64
-QSIZE = 12
 
 def read_my_file_format(filename_queue):
 	reader = tf.TextLineReader()
@@ -127,7 +126,6 @@ def main(_):
 		a[n] = 1
 		temp.append(a)
 	label_validation = temp
-	q = []
 
 	#Training started
 	#6100*100 records
@@ -143,24 +141,15 @@ def main(_):
 		labels = temp
 
 		if i % 100 == 0:
-			#validation
-			if len(q) == QSIZE:
-				q = q[1:]
 			validation_result = 0
 			for j in range(int(VALIDATION_RECORDS / 100)):
 				temps = seq_validation[(j * 100):((j + 1) * 100)]
 				templ = label_validation[(j * 100):((j + 1) * 100)]
 				validation_result += int(sess.run(accuracy, feed_dict={x: temps, y_: templ, keep_prob: 1.0}) * 100)
 			validation_result = validation_result / VALIDATION_RECORDS
-			q.append(validation_result)
-			narray1 = numpy.array(q)
-			sum1 = narray1.sum()
-			narray2 = narray1 * narray1
-			sum2 = narray2.sum()
-			mean = sum1 / len(q)
-			var = sum2 / len(q) - mean ** 2
-			print('Validation result:', validation_result)
-			print("Validation standard deviation:", math.sqrt(var))
+			print 'Iteration {}'.format(i)
+			print 'Training accuracy:', validation_result
+			print ''
 
 		#train
 		sess.run(train_step, feed_dict={x: sequences, y_: labels, keep_prob: 0.5})
