@@ -100,7 +100,7 @@ def main(_):
 	W_fc1 = weight_variable([int(1024 / (first * second * third) * 4 * CHANNEL_3), fc])
 	b_fc1 = bias_variable([fc])
 
-	h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
+	h_fc1 = tf.nn.relu(tf.matmul(h_pool3_flat, W_fc1) + b_fc1)
 
 	#Dropout, to reduce overfitting
 	keep_prob = tf.placeholder(tf.float32)
