@@ -16,10 +16,12 @@ for line in infile.readlines():
 		label = label.replace(',', ' ')
 		label = label.replace(';', ' ')
 		sequence = ''
+		count += 1
 	else:
 		sequence += line
 		sequence = sequence.rstrip()
 writer.writerow([label,sequence])
+print count
 
 infile.close()
 csvfile.close()
