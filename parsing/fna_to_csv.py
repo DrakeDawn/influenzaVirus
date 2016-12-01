@@ -1,7 +1,7 @@
 import csv
 
 infile = open("influenza.fna")
-csvfile = file("csv_test.csv", "wb")
+csvfile = file("raw_data.csv", "wb")
 writer = csv.writer(csvfile)
 
 label = '>label'
