@@ -76,8 +76,8 @@ writer2.writerows(record[:120000])
 writer3.writerows(record[120000:150000])
 writer1.writerows(record[150000:])
 
-print(maxlen/float(count))
-print(count2)
+print 'sequence average length: {}'.format(maxlen/float(count))
+print 'dataset size: {}'.format(count2)
 
 	#if len(sequence) > maxlen:
 	#	maxlen = len(sequence)
