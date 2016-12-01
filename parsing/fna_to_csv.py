@@ -9,9 +9,6 @@ sequence = 'sequence'
 count = 0
 
 for line in infile.readlines():
-	count += 1
-	if count % 1000 == 0:
-		print(count / 1000)
 	if line[0] == '>':
 		writer.writerow([label,sequence])
 		label = line
